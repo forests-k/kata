@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  */
 public class Midnight extends Discount {
 
-    private static long DISCOUNT_RATE = 30;
+    private static final long DISCOUNT_RATE = 30;
 
     public Midnight(HighwayDrive drive) {
         super(drive);
@@ -23,9 +23,7 @@ public class Midnight extends Discount {
      */
     @Override
     protected boolean isDiscount() {
-        boolean enteredAtIsEnable = isEnableMidnight(drive.getEnteredAt());
-        boolean exitedAtIsEnable = isEnableMidnight(drive.getExitedAt());
-        return enteredAtIsEnable || exitedAtIsEnable;
+        return isEnableMidnight(drive.getEnteredAt()) || isEnableMidnight(drive.getExitedAt());
     }
 
     /**
