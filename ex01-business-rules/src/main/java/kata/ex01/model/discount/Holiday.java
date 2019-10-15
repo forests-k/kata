@@ -7,7 +7,7 @@ import kata.ex01.util.HolidayUtils;
 
 public class Holiday extends Discount {
 
-    private static long DISCOUNT_RATE = 30;
+    private static final long DISCOUNT_RATE = 30;
 
     public Holiday(HighwayDrive drive) {
         super(drive);

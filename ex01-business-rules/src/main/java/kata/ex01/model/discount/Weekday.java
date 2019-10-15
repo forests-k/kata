@@ -13,10 +13,10 @@ import java.util.List;
  */
 public class Weekday extends Discount {
 
-    private static List<WeekDayCountPerMonth> weekDayCountPerMonthList =
+    private static final List<CountPerMonth> COUNT_PER_MONTH_LIST =
             Arrays.asList(
-                    new WeekDayCountPerMonth(5, 9, 30),
-                    new WeekDayCountPerMonth(10, Integer.MAX_VALUE, 50)
+                    new CountPerMonth(5, 9, 30),
+                    new CountPerMonth(10, Integer.MAX_VALUE, 50)
             );
 
     public Weekday(HighwayDrive drive) {
@@ -135,17 +135,18 @@ public class Weekday extends Discount {
      * @return 割引率
      */
     private long getDiscountRateByCountPerMonth() {
-        return weekDayCountPerMonthList.stream()
+        return COUNT_PER_MONTH_LIST.stream()
                 .filter(weekDayCount ->
                         weekDayCount.getFromCount() <= drive.getDriver().getCountPerMonth() &&
                                 weekDayCount.getToCount() >= drive.getDriver().getCountPerMonth()
                 )
-                .map(WeekDayCountPerMonth::getDiscountRate)
-                .findFirst().orElse(0L);
+                .map(CountPerMonth::getDiscountRate)
+                .findFirst()
+                .orElse(0L);
     }
 }
 
-class WeekDayCountPerMonth {
+class CountPerMonth {
 
     private int fromCount;
 
@@ -153,7 +154,7 @@ class WeekDayCountPerMonth {
 
     private long discountRate;
 
-    public WeekDayCountPerMonth(int fromCount, int toCount, long discountRate) {
+    public CountPerMonth(int fromCount, int toCount, long discountRate) {
         this.fromCount = fromCount;
         this.toCount = toCount;
         this.discountRate = discountRate;
