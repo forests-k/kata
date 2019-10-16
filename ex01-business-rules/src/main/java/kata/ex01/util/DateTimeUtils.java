@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class DateTimeUtils {
 
     public static boolean isRange(LocalDateTime from, LocalDateTime to, LocalDateTime dateTime) {
-        return dateTime.isAfter(from) && dateTime.isBefore(to);
+        return (dateTime.isAfter(from) || dateTime.isEqual(from)) &&
+                (dateTime.isBefore(to) || dateTime.isEqual(to));
     }
 }

@@ -49,7 +49,7 @@ public class Weekday extends Discount {
      * @return 割引適用可否
      */
     private boolean usedByWeekDay() {
-        return usedTimeAM() || usedTimePM();
+        return (usedTimeAM() || usedTimePM()) && containCountPerMonth();
     }
 
     /**
@@ -75,18 +75,8 @@ public class Weekday extends Discount {
      */
     private boolean isEnableAMTime(LocalDateTime date) {
         return DateTimeUtils.isRange(
-                LocalDateTime.of(
-                        date.getYear(),
-                        date.getMonth(),
-                        date.getDayOfMonth(),
-                        6,
-                        0),
-                LocalDateTime.of(
-                        date.getYear(),
-                        date.getMonth(),
-                        date.getDayOfMonth(),
-                        9,
-                        0),
+                LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 6, 0),
+                LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 9, 0),
                 date);
     }
 
@@ -114,19 +104,21 @@ public class Weekday extends Discount {
     private boolean isEnablePMTime(LocalDateTime date) {
 
         return DateTimeUtils.isRange(
-                LocalDateTime.of(
-                        date.getYear(),
-                        date.getMonth(),
-                        date.getDayOfMonth(),
-                        17,
-                        0),
-                LocalDateTime.of(
-                        date.getYear(),
-                        date.getMonth(),
-                        date.getDayOfMonth(),
-                        21,
-                        0),
+                LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 7, 0),
+                LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), 21, 0),
                 date);
+    }
+
+    /**
+     * 最低利用回数を満たしているか検証します。
+     *
+     * @return {@code true}の場合、最低利用回数を満たしている
+     */
+    private boolean containCountPerMonth() {
+        return COUNT_PER_MONTH_LIST.stream()
+                .anyMatch(weekDayCount ->
+                        weekDayCount.getFromCount() <= drive.getDriver().getCountPerMonth() &&
+                                weekDayCount.getToCount() >= drive.getDriver().getCountPerMonth());
     }
 
     /**
